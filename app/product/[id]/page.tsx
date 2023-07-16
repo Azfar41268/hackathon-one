@@ -1,12 +1,29 @@
 'use client';
 
-import Brushed_Raglan_Sweatshirt from 'public/products/women/brushed-raglan-sweatshirt.png';
+
 import Image from 'next/image';
 import Wrapper from '../../components/wrapper';
 import { BsCart } from 'react-icons/bs';
 import Button from '@/app/components/button';
 
-export default async function ProductDetail() {
+async function getProducts() {
+    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
+
+    if (!products.ok) {
+        throw new Error("Failed to fetch data!");
+    }
+
+    return products.json();
+}
+
+
+export default async function ProductDetail({ params }: { params: { id: number } }) {
+    let { id } = params
+    id -= 1
+    const { products } = await getProducts();
+    const product = products[id];
+    
+
     return(
         <div className='flex justify-center items-center w-full py-10'>
             <Wrapper>
@@ -14,18 +31,18 @@ export default async function ProductDetail() {
                     <div className='flex justify-between items-center gap-x-5'>
                         <div className='flex gap-x-10'>
                             <div className='w-fit h-fit'>
-                                <Image src={Brushed_Raglan_Sweatshirt} alt="" height={100} width={90} />
+                                <Image src={"/" + product.url + ".png"} alt="" height={100} width={90} />
                             </div>
                             <div>
-                                <Image src={Brushed_Raglan_Sweatshirt} alt="" height={900} width={480} />
+                                <Image src={"/" + product.url + ".png"} alt="" height={900} width={480} />
                             </div>
                         </div>
                         <div className='flex flex-col justify-between items-center w-fit'>
                             <h2 className='text-2xl mb-2'>
-                                Brushed Raglan Sweatshirt
+                                {product.name}
                             </h2>
                             <h3 className='text-lg font-bold mb-12 opacity-25'>
-                                Sweater
+                                {product.type}
                             </h3>
                             <h3 className='text-xl mb-3'>
                                 Select Size
@@ -64,9 +81,14 @@ export default async function ProductDetail() {
                                 </div>
                             </div>
                             <div className='flex w-full justify-between items-center mt-7'>
-                                <Button />
+                                <Button product={{
+                                    id: product.id,
+                                    name: product.name,
+                                    price: product.price,
+                                    quantity: 1,
+                                }} />
                                 <h1 className='text-2xl font-semibold'>
-                                    $195.00
+                                    ${product.price}.00
                                 </h1>
                             </div>
                         </div>

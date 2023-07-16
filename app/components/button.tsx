@@ -2,11 +2,12 @@
 
 import { BsCart } from "react-icons/bs";
 import { cartActions } from "../store/slice/cartSlice";
+import type { product } from "../store/slice/cartSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
 
-export default function Button({ product } : { product: React.ReactNode }) {
+export default function Button({ product } : { product: product }) {
     const { addToCart } = cartActions;
     const dispatch = useDispatch();
 
