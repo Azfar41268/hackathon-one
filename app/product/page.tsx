@@ -22,7 +22,7 @@ export default async function Products() {
                     <div className='flex flex-col lg:flex-row justify-between items-center w-full'>
                         <div className='flex flex-wrap gap-x-52 gap-y-10'>
                             {products.map((item: Item) => (
-                                <div className='flex flex-col justify-between items-center hover:scale-105 duration-300'>
+                                <div key={item.id} className='flex flex-col justify-between items-center hover:scale-105 duration-300'>
                                     <Link href={`./product/${item.id}`}>
                                         <Image src={"/" + item.url + ".png"} width={230} height={470} alt="" />
                                     </Link>
