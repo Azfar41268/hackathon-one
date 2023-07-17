@@ -22,8 +22,6 @@ export default async function ProductDetail({ params }: { params: { id: number }
     id -= 1
     const { products } = await getProducts();
     const product = products[id];
-    
-
     return(
         <div className='flex justify-center items-center w-full py-10'>
             <Wrapper>

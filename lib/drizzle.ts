@@ -5,11 +5,11 @@ import { sql } from '@vercel/postgres';
 
 export const itemsTable = pgTable("items", {
     id: serial("id"),
-    name: varchar("name", { length: 255 }),
-    url: varchar("url", { length: 255 }),
-    image: varchar("image", { length: 255 }),
-    type: varchar("type", { length: 255 }),
-    price: integer("price"),
+    name: varchar("name", { length: 255 }).notNull(),
+    url: varchar("url", { length: 255 }).notNull(),
+    image: varchar("image", { length: 255 }).notNull(),
+    type: varchar("type", { length: 255 }).notNull(),
+    price: integer("price").notNull(),
 });
 
 export type Item = InferModel<typeof itemsTable>;
