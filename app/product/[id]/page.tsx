@@ -7,7 +7,7 @@ import { BsCart } from 'react-icons/bs';
 import Button from '@/app/components/button';
 
 async function getProducts() {
-    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
+    const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
 
     if (!products.ok) {
         throw new Error("Failed to fetch data!");

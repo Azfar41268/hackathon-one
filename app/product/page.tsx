@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Item } from '@/lib/drizzle';
 
 async function getProducts() {
-    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
+    const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
 
     if (!products.ok) {
         throw new Error("Failed to fetch data!");
