@@ -12,6 +12,16 @@ export const itemsTable = pgTable("items", {
     price: integer("price").notNull(),
 });
 
+export const cartTable = pgTable("cart", {
+    id: serial("id").notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    type: varchar("type", { length: 255 }).notNull(),
+    price: integer("price").notNull(),
+    quantity: integer("quantity").notNull(),
+});
+
+export type cartItem = InferModel<typeof cartTable>;
+
 export type Item = InferModel<typeof itemsTable>;
 
 export const db = drizzle(sql);

@@ -2,12 +2,18 @@
 
 
 import Image from 'next/image';
+import { useSelector } from "react-redux";
+import { counterActions } from '@/app/store/slice/counterSlice';
 import Wrapper from '../../components/wrapper';
+import Picture from "public/products/men/flex-push-button-bomber.png"
 import { BsCart } from 'react-icons/bs';
 import Button from '@/app/components/button';
+import { useState } from 'react';
+import { RootState } from '@/app/store/store';
 
 async function getProducts() {
-    const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
+    // const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
+    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
 
     if (!products.ok) {
         throw new Error("Failed to fetch data!");
@@ -17,11 +23,14 @@ async function getProducts() {
 }
 
 
-export default async function ProductDetail({ params }: { params: { id: number } }) {
-    let { id } = params
-    id -= 1
+export default async function ProductDetail( params: { id: number }) {
+    let id = params.id -= 1
     const { products } = await getProducts();
     const product = products[id];
+    const quantity = useSelector((state: RootState) => {
+        state.counter.quantity;
+    })
+    const { increment, decrement } = counterActions;
     return(
         <div className='flex justify-center items-center w-full py-10'>
             <Wrapper>
@@ -29,10 +38,10 @@ export default async function ProductDetail({ params }: { params: { id: number }
                     <div className='flex justify-between items-center gap-x-5'>
                         <div className='flex gap-x-10'>
                             <div className='w-fit h-fit'>
-                                <Image src={"/" + product.url + ".png"} alt="" height={100} width={90} />
+                                <Image src={Picture} alt="" height={100} width={90} />
                             </div>
                             <div>
-                                <Image src={"/" + product.url + ".png"} alt="" height={900} width={480} />
+                                <Image src={Picture} alt="" height={900} width={480} />
                             </div>
                         </div>
                         <div className='flex flex-col justify-between items-center w-fit'>
@@ -67,13 +76,13 @@ export default async function ProductDetail({ params }: { params: { id: number }
                                     Quantity
                                 </h2>
                                 <div className='flex justify-between items-center gap-x-3'>
-                                    <button className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
+                                    <button onClick={decrement} className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
                                         -
                                     </button>
                                     <h3 className='text-lg'>
-                                        1
+                                        {quantity}
                                     </h3>
-                                    <button className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
+                                    <button onClick={increment} className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
                                         +
                                     </button>
                                 </div>

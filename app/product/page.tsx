@@ -1,10 +1,12 @@
 import Image from 'next/image';
 import Wrapper from '../components/wrapper';
+import Picture from "public/products/men/flex-push-button-bomber.png"
 import Link from 'next/link';
 import { Item } from '@/lib/drizzle';
 
 async function getProducts() {
-    const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
+    // const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
+    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
 
     if (!products.ok) {
         throw new Error("Failed to fetch data!");
@@ -24,7 +26,7 @@ export default async function Products() {
                             {products.map((item: Item) => (
                                 <div key={item.id} className='flex flex-col justify-between items-center hover:scale-105 duration-300'>
                                     <Link href={`./product/${item.id}`}>
-                                        <Image src={"/" + item.url + ".png"} width={230} height={470} alt="" />
+                                        <Image src={Picture} width={230} height={470} alt="" />
                                     </Link>
                                     <h2 className='text-xl font-semibold'>
                                         {item.name}
