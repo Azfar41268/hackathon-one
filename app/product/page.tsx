@@ -22,7 +22,7 @@ export interface IProduct {
     },
 }
 
-export const getProductData = async () => {
+const getProductData = async () => {
     const res = await client.fetch(`*[_type=="product"] {
         title,
         _id,
