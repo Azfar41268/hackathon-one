@@ -42,16 +42,16 @@ export default async function Products() {
     // const { products } = await ApiCall("products");
     const products: IProduct[] = await getProductData();
     return(
-        <div className='flex justify-center items-center pt-10'>
+        <div className='flex items-center justify-center pt-10'>
             <Wrapper>
-                <div className='flex flex-col justify-between gap-y-10 items-center'>
-                    <div className='flex flex-col lg:flex-row justify-between items-center w-full'>
+                <div className='flex flex-col items-center justify-between gap-y-10'>
+                    <div className='flex flex-col items-center justify-between w-full lg:flex-row'>
                         <div className='flex flex-wrap gap-x-52 gap-y-10'>
                             {products.map((item) => {
 
                                 return(
-                                    <div key={item._id} className='flex flex-col justify-between items-center gap-y-5'>
-                                        <div className='flex flex-col mx-auto justify-between items-center hover:scale-105 duration-300'>
+                                    <div key={item._id} className='flex flex-col items-center justify-between gap-y-5'>
+                                        <div className='flex flex-col items-center justify-between mx-auto duration-300 hover:scale-105'>
                                             <Link href={`./product/${item.url}`}>
                                                 <Image src={urlForImage(item.image).url()} width={230} height={470} alt="" />
                                             </Link>
@@ -68,7 +68,7 @@ export default async function Products() {
                                         <button onClick={() => {
                                             postCartApi(`${item._id}`, 1);
                                             toast.success(`${item.title} has been added to the cart`)
-                                        }} className='text-lg font-medium px-4 py-2 bg-black text-white dark:bg-white rounded-md border-1 border-black dark:text-black hover:shadow-lg dark:hover:sahdow-white hover:invert hover:scale-105 transition-all'>Add to Cart</button>
+                                        }} className='px-4 py-2 text-lg font-medium text-white transition-all bg-black border-black rounded-md dark:bg-white border-1 dark:text-black hover:shadow-lg dark:hover:sahdow-white hover:invert hover:scale-105'>Add to Cart</button>
                                     </div>
                                 )
                             })}

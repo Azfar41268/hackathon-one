@@ -1,9 +1,26 @@
-'use server';
+
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { getProductData, IProduct } from '../product/page'
+import { IProduct } from '../product/page'
 import { urlForImage } from '@/sanity/lib/image'
+import { client } from '@/lib/sanityClient';
+
+const getProductData = async () => {
+    const res = await client.fetch(`*[_type=="product"] {
+        title,
+        _id,
+        price,
+        type,
+        image,
+        url,
+        category -> {
+          category
+        }
+      }`)
+
+      return res
+};
 
 export default async function Men() {
     const products: IProduct[] = await getProductData();

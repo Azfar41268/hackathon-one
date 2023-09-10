@@ -1,10 +1,27 @@
-'use server';
+
 
 import Wrapper from '../components/wrapper';
 import Link from 'next/link';
 import Image from 'next/image';
-import { IProduct, getProductData } from '../product/page';
+import { IProduct } from '../product/page';
 import { urlForImage } from '@/sanity/lib/image';
+import { client } from '@/lib/sanityClient';
+
+const getProductData = async () => {
+    const res = await client.fetch(`*[_type=="product"] {
+        title,
+        _id,
+        price,
+        type,
+        image,
+        url,
+        category -> {
+          category
+        }
+      }`)
+
+      return res
+};
 
 export default async function Women() {
     const products: IProduct[] = await getProductData();
