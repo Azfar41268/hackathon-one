@@ -1,5 +1,5 @@
-import Flex_Push_Button_Bomber from 'public/products/men/flex-push-button-bomber.png'
-import Raglan_SweatShirt from 'public/products/men/raglan-sweatshirt.png'
+'use server';
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { getProductData, IProduct } from '../product/page'
