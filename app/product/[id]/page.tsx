@@ -1,135 +1,128 @@
-'use client';
-
+"use client";
 
 import Image from 'next/image';
-import { useSelector } from "react-redux";
-import { counterActions } from '@/app/store/slice/counterSlice';
 import Wrapper from '../../components/wrapper';
-import Picture from "public/products/men/flex-push-button-bomber.png"
-import { BsCart } from 'react-icons/bs';
 import Button from '@/app/components/button';
-import { useState } from 'react';
-import { RootState } from '@/app/store/store';
+import { client } from '@/lib/sanityClient';
+import { IProduct } from '../page';
+import { urlForImage } from '@/sanity/lib/image';
+import { Suspense, useState } from 'react';
 
-async function getProducts() {
-    // const products = await fetch("https://hackathon-one-pi.vercel.app/api/products", { cache: 'no-store' });
-    const products = await fetch("http://localhost:3000/api/products", { cache: 'no-store' });
+export default async function ProductDetail( { params }: { params: { id: string | number } } ) {
+    const [num, setNum] = useState(1);
+    const [size, setSize] = useState("");
+    const sizes = [
+        "XS", "S", "M", "L", "XL"
+    ];
+    const { id } = params;
+    async function getProductData() {
+        const res = await client.fetch(`*[_type=="product" && url=="${id}"]{
+            _id,
+            title,
+            image,
+            price,
+            type,
+            category -> {
+                category
+            }
+        }`)
+        return res
+    };
+    const products: IProduct[] = await getProductData();
+    // create an array of objects in sizes with size and border property then use it in map function to create the border without the need of useState.
 
-    if (!products.ok) {
-        throw new Error("Failed to fetch data!");
-    }
-
-    return products.json();
-}
-
-
-export default async function ProductDetail( params: { id: number }) {
-    let id = params.id -= 1
-    const { products } = await getProducts();
-    const product = products[id];
-    const quantity = useSelector((state: RootState) => {
-        state.counter.quantity;
-    })
-    const { increment, decrement } = counterActions;
     return(
-        <div className='flex justify-center items-center w-full py-10'>
+        <div className='flex items-center justify-center w-full py-10'>
             <Wrapper>
-                <div className='flex flex-col justify-between items-center'>
-                    <div className='flex justify-between items-center gap-x-5'>
-                        <div className='flex gap-x-10'>
-                            <div className='w-fit h-fit'>
-                                <Image src={Picture} alt="" height={100} width={90} />
-                            </div>
-                            <div>
-                                <Image src={Picture} alt="" height={900} width={480} />
-                            </div>
-                        </div>
-                        <div className='flex flex-col justify-between items-center w-fit'>
-                            <h2 className='text-2xl mb-2'>
-                                {product.name}
-                            </h2>
-                            <h3 className='text-lg font-bold mb-12 opacity-25'>
-                                {product.type}
-                            </h3>
-                            <h3 className='text-xl mb-3'>
-                                Select Size
-                            </h3>
-                            <div className='flex justify-between items-center gap-x-3'>
-                                <button className='w-10 h-10 bg-white dark:bg-black text-gray-800 dark:text-gray-100 rounded-full hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105 duration-300 font-bold'>
-                                    XS
-                                </button>
-                                <button className='w-10 h-10 bg-white dark:bg-black text-gray-800 dark:text-gray-100 rounded-full hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105 duration-300 font-bold'>
-                                    S
-                                </button>
-                                <button className='w-10 h-10 bg-white dark:bg-black text-gray-800 dark:text-gray-100 rounded-full hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105 duration-300 font-bold'>
-                                    M
-                                </button>
-                                <button className='w-10 h-10 bg-white dark:bg-black text-gray-800 dark:text-gray-100 rounded-full hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105 duration-300 font-bold'>
-                                    L
-                                </button>
-                                <button className='w-10 h-10 bg-white dark:bg-black text-gray-800 dark:text-gray-100 rounded-full hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105 duration-300 font-bold'>
-                                    XL
-                                </button>
-                            </div>
-                            <div className='flex justify-between items-center gap-x-7 mt-5'>
-                                <h2 className='text-lg font-medium'>
-                                    Quantity
-                                </h2>
-                                <div className='flex justify-between items-center gap-x-3'>
-                                    <button onClick={decrement} className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
-                                        -
-                                    </button>
-                                    <h3 className='text-lg'>
-                                        {quantity}
-                                    </h3>
-                                    <button onClick={increment} className='w-12 h-12 rounded-full text-lg bg-gray-200 dark:bg-slate-950'>
-                                        +
-                                    </button>
+                {products.map((product) => (
+                    <div className='flex flex-col items-center justify-between'>
+                        <div className='flex items-center justify-between gap-x-5'>
+                            <div className='flex gap-x-10'>
+                                <div className='w-fit h-fit'>
+                                    <Image src={urlForImage(product.image).url()} alt="" height={100} width={90} />
+                                </div>
+                                <div>
+                                    <Image src={urlForImage(product.image).url()} alt="" height={900} width={480} />
                                 </div>
                             </div>
-                            <div className='flex w-full justify-between items-center mt-7'>
-                                <Button product={{
-                                    id: product.id,
-                                    name: product.name,
-                                    price: product.price,
-                                    quantity: 1,
-                                }} />
-                                <h1 className='text-2xl font-semibold'>
-                                    ${product.price}.00
+                            <div className='flex flex-col items-center justify-between w-fit'>
+                                <h2 className='mb-2 text-2xl'>
+                                    {product.title}
+                                </h2>
+                                <h3 className='mb-12 text-lg font-bold opacity-25'>
+                                    {product.type}
+                                </h3>
+                                <h3 className='mb-3 text-xl'>
+                                    Select Size
+                                </h3>
+                                <Suspense>
+                                <div className='flex items-center justify-between gap-x-3'>
+                                    {sizes.map((item: string) => (
+                                        <button onClick={() => setSize(item)} className='w-10 h-10 font-bold text-gray-800 duration-300 bg-white rounded-full dark:bg-black dark:text-gray-100 hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105'>
+                                            {item}
+                                        </button>
+                                    ))}
+                                </div>
+                                </Suspense>
+                                <div className='flex items-center justify-between mt-5 gap-x-7'>
+                                    <h2 className='text-lg font-medium'>
+                                        Quantity
+                                    </h2>
+                                    <div className='flex items-center justify-between gap-x-3'>
+                                        <button onClick={() => {
+                                            if (num > 1) {
+                                                setNum(num - 1);
+                                            }
+                                        }} className='w-12 h-12 text-lg bg-gray-200 rounded-full dark:bg-slate-950'>
+                                            -
+                                        </button>
+                                        <h3 className='text-lg'>
+                                            {num}
+                                        </h3>
+                                        <button onClick={() => setNum(num + 1)} className='w-12 h-12 text-lg bg-gray-200 rounded-full dark:bg-slate-950'>
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='flex items-center justify-between w-full mt-7'>
+                                    <Button product={product} quantity={num} />
+                                    <h1 className='text-2xl font-semibold'>
+                                        ${product.price}.00
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-col items-center justify-between w-full pb-16 my-20 border-b-2 border-b-black dark:border-b-white'>
+                            <div className='relative items-center justify-center w-full'>
+                                <h2 className='text-xl font-bold'>
+                                    Product Information
+                                </h2>
+                                <h1 className='absolute left-0 font-extrabold text-black/5 dark:text-white/5 text-8xl -top-7'>
+                                    OVERVIEW
                                 </h1>
                             </div>
                         </div>
-                    </div>
-                    <div className='my-20 flex flex-col justify-between items-center pb-16 border-b-2 border-b-black dark:border-b-white w-full'>
-                        <div className='w-full justify-center items-center relative'>
-                            <h2 className='font-bold text-xl'>
-                                Product Information
-                            </h2>
-                            <h1 className='absolute text-black/5 dark:text-white/5 text-8xl font-extrabold -top-7 left-0'>
-                                OVERVIEW
-                            </h1>
+                        <div className='flex gap-x-16'>
+                            <h3 className='text-xl font-bold tracking-wider dark:text-gray-300 text-slate-500'>
+                                Product Details
+                            </h3>
+                            <h3 className='text-lg lg:w-9/12'>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </h3>
+                        </div>
+                        <div className='flex w-full mt-5 gap-x-24'>
+                            <h3 className='text-xl font-bold tracking-wider dark:text-gray-300 text-slate-500'>
+                                Product Care
+                            </h3>
+                            <ul className='flex flex-col ml-2 text-xl font-semibold list-disc text-slate-600 dark:text-gray-300'>
+                                <li>Hand wash using cold water.</li>
+                                <li>Do not using bleach.</li>
+                                <li>Hang it to dry.</li>
+                                <li>Iron on low temperature.</li>
+                            </ul>
                         </div>
                     </div>
-                    <div className='flex gap-x-16'>
-                        <h3 className='text-xl font-bold dark:text-gray-300 text-slate-500 tracking-wider'>
-                            Product Details
-                        </h3>
-                        <h3 className='text-lg lg:w-9/12'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </h3>
-                    </div>
-                    <div className='flex gap-x-24 w-full mt-5'>
-                        <h3 className='text-xl font-bold dark:text-gray-300 text-slate-500 tracking-wider'>
-                            Product Care
-                        </h3>
-                        <ul className='flex flex-col list-disc text-xl font-semibold text-slate-600 dark:text-gray-300 ml-2'>
-                            <li>Hand wash using cold water.</li>
-                            <li>Do not using bleach.</li>
-                            <li>Hang it to dry.</li>
-                            <li>Iron on low temperature.</li>
-                        </ul>
-                    </div>
-                </div>
+                ))}
             </Wrapper>
         </div>
     )

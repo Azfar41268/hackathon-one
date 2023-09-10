@@ -89,8 +89,8 @@ export default function Header() {
             </div>
             <div className={
                 menuOpen === true
-                ? "fixed md:hidden ease-in duration-500 flex flex-col justify-center gap-7 bg-white dark:bg-black items-center transition-all left-0 h-full w-[65%]"
-                : "flex md:hidden flex-col justify-center gap-7 items-center ease-in duration-500 fixed left-[-100%] transtion-all h-full w-[65%]"
+                ? "fixed md:hidden ease-in duration-500 flex flex-col justify-center gap-7 bg-white dark:bg-black items-center transition-all left-0 h-full z-10 w-[65%]"
+                : "flex md:hidden flex-col justify-center gap-7 items-center ease-in duration-500 fixed left-[-100%] transtion-all h-full z-10 w-[65%]"
             }>
                 <Link href='./men' className="text-lg">Men</Link>
                 <Link href='./women' className="text-lg">Women</Link>

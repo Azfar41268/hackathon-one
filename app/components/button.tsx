@@ -1,21 +1,16 @@
 'use client';
 
 import { BsCart } from "react-icons/bs";
-import { cartActions } from "../store/slice/cartSlice";
-import type { product } from "../store/slice/cartSlice";
-import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { postCartApi } from "./cartApi";
 
 
-export default function Button({ product } : { product: product }) {
-    const { addToCart } = cartActions;
-    const dispatch = useDispatch();
-
-    const addItem = () => {
-        dispatch(addToCart({ quantity: 1, product: product }));
-    }
+export default function Button({ product, quantity } : { product: any, quantity: number }) {
     return(
-        <button onClick={addItem} className='flex gap-x-2 items-center px-3 py-2 rounded-md hover:scale-105 duration-300 text-white dark:text-black/90 bg-gray-900 dark:bg-slate-50'>
+        <button onClick={() => {
+            postCartApi(`${product._id}`, quantity);
+            toast.success(`${product.title} has been added to the cart`)
+        }} className='flex items-center px-3 py-2 text-white duration-300 bg-gray-900 rounded-md gap-x-2 hover:scale-105 dark:text-black/90 dark:bg-slate-50'>
             <BsCart /> <h1>Add To Cart</h1>
         </button>
     )

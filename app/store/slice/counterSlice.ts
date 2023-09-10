@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface counterState {
+export interface counterState {
     quantity: number,
 };
 

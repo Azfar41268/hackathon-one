@@ -4,6 +4,7 @@ import First from 'public/products/women/brushed-raglan-sweatshirt.png';
 import Second from 'public/products/women/cameryn-sash-tie-dress.png';
 import Third from 'public/products/women/flex-sweatshirt.png';
 import Fourth from 'public/products/women/flex-sweatpants.png';
+import Link from "next/link";
 
 export default function Products() {
     return(
@@ -19,16 +20,16 @@ export default function Products() {
                         </h1>
                     </div>
                     <div className="flex flex-col lg:flex-row p-10 gap-5 items-center">
-                        <div className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
+                        <Link href={"/product/brushed-raglan-sweatshirt"} className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
                             <Image src={First} alt="" width={400} height={900} />
                             <h1 className="font-medium text-[19px] mt-3 mb-2">
-                                Brushed Raglas Sweatshirt
+                                Brushed Raglan Sweatshirt
                             </h1>
                             <h1 className="font-semibold text-xl">
                                 $195
                             </h1>
-                        </div>
-                        <div className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
+                        </Link>
+                        <Link href={"/product/cameryn-sash-tie-dress"} className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
                             <Image src={Second} alt="" width={400} height={900} />
                             <h1 className="font-medium text-[19px] mt-3 mb-2">
                                 Cameryn Sash Tie Dress
@@ -36,8 +37,8 @@ export default function Products() {
                             <h1 className="font-semibold text-xl">
                                 $545
                             </h1>
-                        </div>
-                        <div className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
+                        </Link>
+                        <Link href={"/product/flex-sweatshirt"} className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
                             <Image src={Third} alt="" width={400} height={900} />
                             <h1 className="font-medium text-[19px] mt-3 mb-2">
                                 Flex Sweatshirt
@@ -45,8 +46,8 @@ export default function Products() {
                             <h1 className="font-semibold text-xl">
                                 $175
                             </h1>
-                        </div>
-                        <div className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
+                        </Link>
+                        <Link href={"/product/flex-sweatpants"} className="flex flex-col justify-between items-center hover:scale-110 duration-300 transition-all">
                             <Image src={Fourth} alt="" width={400} height={900} />
                             <h1 className="font-medium text-[19px] mt-3 mb-2">
                                 Flex Sweatpants
@@ -54,7 +55,7 @@ export default function Products() {
                             <h1 className="font-semibold text-xl">
                                 $175
                             </h1>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </Wrapper>
