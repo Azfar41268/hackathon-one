@@ -12,7 +12,26 @@ export default async function ProductDetail( { params }: { params: { id: string 
     const [num, setNum] = useState(1);
     const [size, setSize] = useState("");
     const sizes = [
-        "XS", "S", "M", "L", "XL"
+        {
+            size: "XS",
+            id: 1
+        },
+        {
+            size: "S",
+            id: 2
+        },
+        {
+            size: "M",
+            id: 3
+        },
+        {
+            size: "L",
+            id: 4
+        },
+        {
+            size: "XL",
+            id: 5
+        },
     ];
     const { id } = params;
     async function getProductData() {
@@ -57,9 +76,9 @@ export default async function ProductDetail( { params }: { params: { id: string 
                                 </h3>
                                 <Suspense>
                                 <div className='flex items-center justify-between gap-x-3'>
-                                    {sizes.map((item: string) => (
-                                        <button onClick={() => setSize(item)} className='w-10 h-10 font-bold text-gray-800 duration-300 bg-white rounded-full dark:bg-black dark:text-gray-100 hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105'>
-                                            {item}
+                                    {sizes.map((item) => (
+                                        <button key={item.id} onClick={() => setSize(item.size)} className='w-10 h-10 font-bold text-gray-800 duration-300 bg-white rounded-full dark:bg-black dark:text-gray-100 hover:shadow-xl hover:dark:shadow-lg hover:dark:shadow-gray-50 hover:scale-105'>
+                                            {item.size}
                                         </button>
                                     ))}
                                 </div>
