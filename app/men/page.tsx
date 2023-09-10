@@ -8,12 +8,12 @@ import { urlForImage } from '@/sanity/lib/image'
 export default async function Men() {
     const products: IProduct[] = await getProductData();
     return(
-        <div className="flex justify-center items-center my-16">
-            <div className='flex flex-col md:flex-row gap-24'>
+        <div className="flex items-center justify-center my-16">
+            <div className='flex flex-col gap-24 md:flex-row'>
                 {products.map((item) => {
                     if (item.category.category === "Male") {
                         return(
-                            <Link href={`../product/${item.url}`} className='flex flex-col mx-auto hover:scale-105 transition-all active:scale-95 justify-between items-center'>
+                            <Link key={item._id} href={`../product/${item.url}`} className='flex flex-col items-center justify-between mx-auto transition-all hover:scale-105 active:scale-95'>
                                 <Image src={urlForImage(item.image).url()} width={250} height={470} alt="" />
                                 <h2 className='text-xl font-semibold'>
                                     {item.title}

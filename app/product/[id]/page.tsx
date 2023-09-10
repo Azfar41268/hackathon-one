@@ -35,7 +35,7 @@ export default async function ProductDetail( { params }: { params: { id: string 
         <div className='flex items-center justify-center w-full py-10'>
             <Wrapper>
                 {products.map((product) => (
-                    <div className='flex flex-col items-center justify-between'>
+                    <div key={product._id} className='flex flex-col items-center justify-between'>
                         <div className='flex items-center justify-between gap-x-5'>
                             <div className='flex gap-x-10'>
                                 <div className='w-fit h-fit'>

@@ -59,13 +59,13 @@ async function getProductData( id: string ) {
                             {cart.map(async (item) => {
                                 const products: IProduct[] = await getProductData(item.product_id);
                                 return(
-                                    <div className="flex flex-col">
+                                    <div key={item.id} className="flex flex-col">
                                         {products.map((product) => {
                                             totalPrice.push(product.price * item.quantity);
                                             quan += item.quantity
                                             return(
                                                 (
-                                                    <div className="flex py-10 gap-x-16">
+                                                    <div key={product._id} className="flex py-10 gap-x-16">
                                                         <div>
                                                             <Image className="object-cover h-48 rounded-lg w-36" src={urlForImage(product.image).url()} width={36} height={48} alt="" />
                                                         </div>

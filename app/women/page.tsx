@@ -1,12 +1,3 @@
-import Imperial_Alpacca_Hoodie from 'public/products/women/imperial-alpacca-hoodie.png'
-import Brushed_Raglan_Sweatshirt from 'public/products/women/brushed-raglan-sweatshirt.png';
-import Cameryn_Sash_Tie_Dress from 'public/products/women/cameryn-sash-tie-dress.png';
-import Flex_SweatShirt from 'public/products/women/flex-sweatshirt.png';
-import Flex_Sweatpants from 'public/products/women/flex-sweatpants.png';
-import Pink_Fleece_SweatPants from 'public/products/women/pink-fleece-sweatpants.png';
-import Lite_SweatPants from 'public/products/women/lite-sweatpants.png';
-import Muscle_Tank from 'public/products/women/muscle-tank.png';
-import Brushed_Bomber from 'public/products/women/brushed-bomber.png';
 import Wrapper from '../components/wrapper';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,13 +7,13 @@ import { urlForImage } from '@/sanity/lib/image';
 export default async function Women() {
     const products: IProduct[] = await getProductData();
     return(
-        <div className='flex justify-center items-center my-16'>
+        <div className='flex items-center justify-center my-16'>
             <Wrapper>
                 <div className='flex flex-wrap gap-48'>
                     {products.map((item) => {
                         if (item.category.category === "Female") {
                             return(
-                                <div className='flex flex-col justify-between items-center hover:scale-105 duration-300'>
+                                <div key={item._id} className='flex flex-col items-center justify-between duration-300 hover:scale-105'>
                                     <Link href={`../product/${item.url}`}>
                                         <Image src={urlForImage(item.image).url()} width={230} height={470} alt="" />
                                     </Link>
